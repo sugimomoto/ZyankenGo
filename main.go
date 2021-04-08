@@ -3,19 +3,21 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 	"strconv"
+	"time"
 )
 
 func main() {
-	var myHand Hand
-	var enemyHand Hand
 	var input string
+	var endFlg string
 
 	fmt.Println("じゃんけんスタート！")
+	rand.Seed(time.Now().Unix())
 
 	for {
 		fmt.Println("0,1,2のいずれかを入力してね")
-		fmt.Println("0:グー　1:パー　2:チョキ")
+		fmt.Println("0:グー　1:チョキ　2:パー")
 
 		fmt.Scanf("%s", &input)
 
@@ -25,10 +27,31 @@ func main() {
 			fmt.Println("入力された値が適切じゃないよ")
 			continue
 		}
+		fmt.Println("じゃーんけーん")
 
-		myHand.SetHand(val)
-		enemyHand.SetHand(1)
+		myHand := GetHand(val)
+		enemyHand := GetHand(rand.Intn(2))
+		fmt.Println("ぽん！")
 
+		fmt.Println("あなた ", myHand)
+		fmt.Println("あいて ", enemyHand)
+
+		switch myHand.Judge(enemyHand) {
+		case Win:
+			fmt.Println("あなたの勝ち！")
+		case Loss:
+			fmt.Println("あなたの負け！")
+		case Draw:
+			fmt.Println("引き分け！")
+		}
+
+		fmt.Println("終了する場合は end と入力してね")
+
+		fmt.Scanf("%s", &endFlg)
+
+		if endFlg == "end" {
+			break
+		}
 	}
 }
 
